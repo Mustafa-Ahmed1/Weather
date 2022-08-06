@@ -1,0 +1,5 @@
+<resources>
+    <string name="app_name">Weather Now</string>
+    <string name="country_name">Iraq, Misan</string>
+    <string name="weather_today">Weather Today</string>
+</resources>

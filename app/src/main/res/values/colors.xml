@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="black">#FF000000</color>
+    <color name="white">#FFFFFFFF</color>
+
+
+    <color name="home_background">#4E3569</color>
+    <color name="rounded_card_background">#422D59</color>
+    <color name="white_87">#DEFFFFFF</color>
+    <color name="purple">#77569B</color>
+    <color name="purple_90">#F277569B</color>
+    <color name="purple_75">#BF77569B</color>
+    <color name="gray_87">#DECDCDCD</color>
+    <color name="yellow">#DEE3D37F</color>
+
+</resources>

@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="icon_scale">24dp</dimen>
+    <dimen name="lottiefiles_scale">96dp</dimen>
+    <!-- spacing -->
+    <dimen name="spacing_specific_scale">72dp</dimen>
+    <dimen name="spacing_extra_large">32dp</dimen>
+    <dimen name="spacing_large">24dp</dimen>
+    <dimen name="spacing_medium">16dp</dimen>
+    <dimen name="spacing_small">8dp</dimen>
+    <dimen name="spacing_extra_small">4dp</dimen>
+    <!-- text -->
+    <dimen name="text_specific_size">48sp</dimen>
+    <dimen name="text_extra_large">32sp</dimen>
+    <dimen name="text_large">24sp</dimen>
+    <dimen name="text_between_medium_and_large">20sp</dimen>
+    <dimen name="text_medium">16sp</dimen>
+    <dimen name="text_small">12sp</dimen>
+    <!-- radius -->
+    <dimen name="radius_xxx">125dp</dimen>
+    <dimen name="radius_xx">64dp</dimen>
+    <dimen name="radius_x">28dp</dimen>
+    <dimen name="radius">24dp</dimen>
+</resources>

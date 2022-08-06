@@ -1,0 +1,61 @@
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.APIWeek" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <!-- Primary brand color. -->
+        <item name="colorPrimary">@color/home_background</item>
+        <item name="colorPrimaryVariant">@color/home_background</item>
+        <item name="colorOnPrimary">@color/white</item>
+        <!-- Status bar color. -->
+        <item name="android:statusBarColor">?attr/colorPrimaryVariant</item>
+        <!-- Customize your theme here. -->
+    </style>
+
+    <style name="DefaultTextStyle">
+        <item name="android:textColor">@color/white_87</item>
+        <item name="fontFamily">@font/poppins_medium</item>
+        <item name="android:textSize">@dimen/text_medium</item>
+    </style>
+
+    <style name="LargeCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_large_corners</item>
+    </style>
+    <style name="ShapeAppearanceOverlay_card_large_corners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopLeft">@dimen/radius_xx</item>
+        <item name="cornerSizeBottomLeft">@dimen/radius_xx</item>
+    </style>
+
+    <style name="SmallCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_small_corners</item>
+    </style>
+    <style name="ShapeAppearanceOverlay_card_small_corners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/radius</item>
+        <item name="cornerSizeBottomRight">@dimen/radius</item>
+    </style>
+
+    <style name="RoundedCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_rounded_corners
+        </item>
+    </style>
+    <style name="ShapeAppearanceOverlay_card_rounded_corners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/radius_xxx</item>
+        <item name="cornerSizeBottomRight">@dimen/radius_xxx</item>
+        <item name="cornerSizeTopLeft">@dimen/radius_xxx</item>
+        <item name="cornerSizeBottomLeft">@dimen/radius_xxx</item>
+    </style>
+
+    <style name="WeatherCardViewStyle" parent="@style/Widget.MaterialComponents.CardView">
+        <item name="shapeAppearanceOverlay">@style/ShapeAppearanceOverlay_card_weather_corners
+        </item>
+    </style>
+    <style name="ShapeAppearanceOverlay_card_weather_corners">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSizeTopRight">@dimen/radius_xx</item>
+        <item name="cornerSizeTopLeft">@dimen/radius_xx</item>
+        <item name="cornerSizeBottomRight">@dimen/radius_x</item>
+        <item name="cornerSizeBottomLeft">@dimen/radius_x</item>
+    </style>
+
+</resources>
