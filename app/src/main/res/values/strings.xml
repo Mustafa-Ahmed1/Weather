@@ -2,4 +2,14 @@
     <string name="app_name">Weather Now</string>
     <string name="country_name">Iraq, Misan</string>
     <string name="weather_today">Weather Today</string>
+    <string name="humidity">Humidity</string>
+    <string name="current_temperature">Current Temperature</string>
+    <string name="percent">%</string>
+    <string name="m_s">m/s</string>
+    <string name="c">°C</string>
+    <string name="wind_speed">Wind Speed</string>
+    <string name="temperature">Temperature</string>
+    <string name="today">Today,</string>
+    <string name="no_connection_message">There is no internet connection\nPlease check out your connection</string>
+    <string name="oops">Oops!</string>
 </resources>

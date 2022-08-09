@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <dimen name="icon_scale">24dp</dimen>
-    <dimen name="lottiefiles_scale">96dp</dimen>
     <!-- spacing -->
     <dimen name="spacing_specific_scale">72dp</dimen>
     <dimen name="spacing_extra_large">32dp</dimen>
@@ -21,4 +20,9 @@
     <dimen name="radius_xx">64dp</dimen>
     <dimen name="radius_x">28dp</dimen>
     <dimen name="radius">24dp</dimen>
+    <!-- lottiefiles -->
+    <dimen name="lotties_weather_scale">96dp</dimen>
+    <dimen name="lotties_reload_scale">56dp</dimen>
+    <dimen name="lotties_loading_large_scale">56dp</dimen>
+    <dimen name="lotties_loading_small_scale">40dp</dimen>
 </resources>
