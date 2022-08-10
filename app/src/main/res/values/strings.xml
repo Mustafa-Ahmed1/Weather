@@ -12,4 +12,5 @@
     <string name="today">Today,</string>
     <string name="no_connection_message">There is no internet connection\nPlease check out your connection</string>
     <string name="oops">Oops!</string>
+    <string name="try_again">try again</string>
 </resources>

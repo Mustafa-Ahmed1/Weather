@@ -3,7 +3,6 @@
     <color name="black">#FF000000</color>
     <color name="white">#FFFFFFFF</color>
 
-
     <color name="home_background">#4E3569</color>
     <color name="rounded_card_background">#422D59</color>
     <color name="white_87">#DEFFFFFF</color>
@@ -12,5 +11,6 @@
     <color name="purple_75">#BF77569B</color>
     <color name="gray_87">#DECDCDCD</color>
     <color name="yellow">#DEE3D37F</color>
-
+    <color name="yellow_dark">#DEA39755</color>
+    <color name="on_purple_background">#DACAEB</color>
 </resources>

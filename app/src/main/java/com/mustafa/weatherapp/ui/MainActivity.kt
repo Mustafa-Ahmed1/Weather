@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.View
 import androidx.appcompat.app.AppCompatActivity
+import com.mustafa.weatherapp.R
 import com.mustafa.weatherapp.WeatherRepository
 import com.mustafa.weatherapp.databinding.ActivityMainBinding
 import com.mustafa.weatherapp.model.response.Weather
@@ -28,10 +29,20 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         getWeatherData()
+        bindClickableViews()
+    }
 
-        binding.lottieReload.setOnClickListener {
-            getWeatherData()
-            binding.lottieReload.playAnimation()
+    @SuppressLint("ClickableViewAccessibility", "ResourceAsColor")
+    private fun bindClickableViews() {
+        binding.apply {
+            lottieReload.setOnClickListener {
+                getWeatherData()
+                binding.lottieReload.playAnimation()
+            }
+
+            textTryAgain.setOnClickListener {
+                getWeatherData()
+            }
         }
     }
 
@@ -91,10 +102,8 @@ class MainActivity : AppCompatActivity() {
     private fun getWeatherLoadingLottieViews(): MutableList<View> {
         with(binding) {
             return mutableListOf(
-                lottieTemperatureNowLoading,
-                lottieTemperatureTodayLoading,
-                lottieHumidityTodayLoading,
-                lottieWindSpeedTodayLoading
+                lottieTemperatureNowLoading, lottieTemperatureTodayLoading,
+                lottieHumidityTodayLoading, lottieWindSpeedTodayLoading
             )
         }
     }
@@ -102,10 +111,8 @@ class MainActivity : AppCompatActivity() {
     private fun getWeatherResultViews(): MutableList<View> {
         with(binding) {
             return mutableListOf(
-                textTemperatureNow,
-                textTemperatureToday,
-                textHumidityToday,
-                textWindSpeedToday
+                textTemperatureNow, textTemperatureToday, textHumidityToday,
+                textWindSpeedToday, textTopTemperatureUnit, textTopPercent, textTopSpeedUnit
             )
         }
     }

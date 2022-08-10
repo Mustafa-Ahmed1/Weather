@@ -10,7 +10,8 @@
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/screen_on_success"
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:visibility="visible">
 
         <ImageView
             android:id="@+id/imageView"
@@ -92,17 +93,20 @@
             android:layout_marginTop="24dp"
             android:backgroundTint="@color/purple_90"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/text_today_date">
+            app:layout_constraintTop_toBottomOf="@+id/text_today_date" />
 
-            <TextView
-                style="@style/DefaultTextStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="end"
-                android:layout_marginEnd="@dimen/text_medium"
-                android:text="@string/current_temperature"
-                android:textColor="@color/yellow" />
-        </com.google.android.material.card.MaterialCardView>
+        <TextView
+            style="@style/DefaultTextStyle"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end"
+            android:layout_marginEnd="@dimen/text_medium"
+            android:text="@string/current_temperature"
+            android:textColor="@color/yellow"
+            android:translationZ="90dp"
+            app:layout_constraintBottom_toBottomOf="@+id/materialCardView2"
+            app:layout_constraintEnd_toEndOf="@+id/materialCardView2"
+            app:layout_constraintTop_toTopOf="@+id/materialCardView2" />
 
         <TextView
             android:id="@+id/textView2"
@@ -129,7 +133,7 @@
             app:layout_constraintTop_toBottomOf="@+id/textView2" />
 
         <com.google.android.material.card.MaterialCardView
-            android:id="@+id/cardView_rain"
+            android:id="@+id/cardView_humidity"
             style="@style/WeatherCardViewStyle"
             android:layout_width="128dp"
             android:layout_height="136dp"
@@ -140,18 +144,18 @@
             app:layout_constraintEnd_toEndOf="@+id/materialCardView3" />
 
         <com.airbnb.lottie.LottieAnimationView
-            android:id="@+id/lottieAnimationView_rain"
+            android:id="@+id/lottieAnimationView_humidity"
             android:layout_width="@dimen/lotties_weather_scale"
             android:layout_height="@dimen/lotties_weather_scale"
             android:layout_marginStart="8dp"
             android:layout_marginTop="-32dp"
             android:translationZ="90dp"
-            app:layout_constraintEnd_toEndOf="@+id/cardView_rain"
-            app:layout_constraintStart_toStartOf="@+id/cardView_rain"
-            app:layout_constraintTop_toTopOf="@+id/cardView_rain"
+            app:layout_constraintEnd_toEndOf="@+id/cardView_humidity"
+            app:layout_constraintStart_toStartOf="@+id/cardView_humidity"
+            app:layout_constraintTop_toTopOf="@+id/cardView_humidity"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_rawRes="@raw/rain_purple" />
+            app:lottie_rawRes="@raw/rain" />
 
         <TextView
             android:id="@+id/text_humidity_today"
@@ -163,12 +167,13 @@
             android:textColor="@color/yellow"
             android:textSize="28sp"
             android:translationZ="90dp"
-            app:layout_constraintEnd_toEndOf="@+id/cardView_rain"
-            app:layout_constraintStart_toStartOf="@+id/cardView_rain"
-            app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView_rain"
+            app:layout_constraintEnd_toEndOf="@+id/cardView_humidity"
+            app:layout_constraintStart_toStartOf="@+id/cardView_humidity"
+            app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView_humidity"
             tools:ignore="HardcodedText" />
 
         <TextView
+            android:id="@+id/text_top_percent"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
@@ -178,7 +183,7 @@
             android:textSize="@dimen/text_small"
             android:translationZ="90dp"
             app:layout_constraintStart_toEndOf="@+id/text_humidity_today"
-            app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView_rain" />
+            app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView_humidity" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/cardView_sun"
@@ -203,7 +208,7 @@
             app:layout_constraintTop_toTopOf="@+id/cardView_sun"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_rawRes="@raw/sun_purple"
+            app:lottie_rawRes="@raw/sun"
             app:lottie_speed="0.5" />
 
         <TextView
@@ -222,6 +227,7 @@
             tools:ignore="HardcodedText" />
 
         <TextView
+            android:id="@+id/text_top_temperature_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
@@ -270,7 +276,7 @@
             app:layout_constraintTop_toTopOf="@+id/cardView_wind_speed"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
-            app:lottie_rawRes="@raw/wind_purple" />
+            app:lottie_rawRes="@raw/wind" />
 
         <TextView
             android:id="@+id/text_wind_speed_today"
@@ -288,7 +294,7 @@
             tools:ignore="HardcodedText" />
 
         <TextView
-            android:id="@+id/textView3"
+            android:id="@+id/text_top_speed_unit"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
@@ -324,9 +330,9 @@
             android:textColor="@color/white_87"
             android:textSize="12sp"
             android:translationZ="90dp"
-            app:layout_constraintBottom_toBottomOf="@+id/cardView_rain"
-            app:layout_constraintEnd_toEndOf="@+id/cardView_rain"
-            app:layout_constraintStart_toStartOf="@+id/cardView_rain" />
+            app:layout_constraintBottom_toBottomOf="@+id/cardView_humidity"
+            app:layout_constraintEnd_toEndOf="@+id/cardView_humidity"
+            app:layout_constraintStart_toStartOf="@+id/cardView_humidity" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottie_reload"
@@ -337,7 +343,8 @@
             app:layout_constraintEnd_toEndOf="@+id/materialCardView3"
             app:layout_constraintStart_toStartOf="@+id/materialCardView3"
             app:layout_constraintTop_toBottomOf="@+id/cardView_sun"
-            app:lottie_rawRes="@raw/reload" />
+            app:lottie_rawRes="@raw/reload"
+            app:lottie_speed="2" />
 
         <com.airbnb.lottie.LottieAnimationView
             android:id="@+id/lottie_temperature_now_loading"
@@ -359,10 +366,9 @@
             android:layout_height="@dimen/lotties_loading_small_scale"
             android:translationZ="90dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/text_temperature_today"
-            app:layout_constraintEnd_toEndOf="@+id/text_temperature_today"
-            app:layout_constraintStart_toStartOf="@+id/text_temperature_today"
-            app:layout_constraintTop_toTopOf="@+id/text_temperature_today"
+            app:layout_constraintEnd_toEndOf="@+id/cardView_sun"
+            app:layout_constraintStart_toStartOf="@+id/cardView_sun"
+            app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView_sun"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/loading_yellow" />
@@ -373,10 +379,9 @@
             android:layout_height="@dimen/lotties_loading_small_scale"
             android:translationZ="90dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/text_wind_speed_today"
-            app:layout_constraintEnd_toEndOf="@+id/text_wind_speed_today"
-            app:layout_constraintStart_toStartOf="@+id/text_wind_speed_today"
-            app:layout_constraintTop_toTopOf="@+id/text_wind_speed_today"
+            app:layout_constraintEnd_toEndOf="@+id/cardView_wind_speed"
+            app:layout_constraintStart_toStartOf="@+id/cardView_wind_speed"
+            app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView_wind_speed"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/loading_yellow" />
@@ -387,10 +392,9 @@
             android:layout_height="@dimen/lotties_loading_small_scale"
             android:translationZ="90dp"
             android:visibility="gone"
-            app:layout_constraintBottom_toBottomOf="@+id/text_humidity_today"
-            app:layout_constraintEnd_toEndOf="@+id/text_humidity_today"
-            app:layout_constraintStart_toStartOf="@+id/text_humidity_today"
-            app:layout_constraintTop_toTopOf="@+id/text_humidity_today"
+            app:layout_constraintEnd_toEndOf="@+id/cardView_humidity"
+            app:layout_constraintStart_toStartOf="@+id/cardView_humidity"
+            app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView_humidity"
             app:lottie_autoPlay="true"
             app:lottie_loop="true"
             app:lottie_rawRes="@raw/loading_yellow" />
@@ -415,7 +419,7 @@
             app:layout_constraintVertical_chainStyle="packed"
             app:lottie_autoPlay="true"
             app:lottie_rawRes="@raw/internet_connection"
-            app:lottie_speed="1"/>
+            app:lottie_speed="1" />
 
         <TextView
             android:id="@+id/textView4"
@@ -423,29 +427,44 @@
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_medium"
             android:text="@string/oops"
-            android:textColor="#DACAEB"
+            android:textColor="@color/on_purple_background"
             android:textSize="@dimen/text_large"
             app:layout_constraintBottom_toTopOf="@+id/textView5"
-            app:layout_constraintEnd_toEndOf="@+id/lottieAnimationView"
+            app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
-            app:layout_constraintStart_toStartOf="@+id/lottieAnimationView"
+            app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/lottieAnimationView" />
 
         <TextView
             android:id="@+id/textView5"
-            android:layout_marginTop="@dimen/spacing_small"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:fontFamily="@font/poppins_regular"
-            android:text="@string/no_connection_message"
-            android:textColor="#DACAEB"
-            android:textSize="12sp"
             android:gravity="center"
+            android:text="@string/no_connection_message"
+            android:textColor="@color/on_purple_background"
+            android:textSize="12sp"
+            app:layout_constraintBottom_toTopOf="@+id/text_try_again"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.5"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+
+        <TextView
+            android:id="@+id/text_try_again"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/text_extra_large"
+            android:fontFamily="@font/poppins_regular"
+            android:gravity="center"
+            android:text="@string/try_again"
+            android:textColor="@color/selector"
+            android:textSize="@dimen/text_medium"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="@+id/lottieAnimationView"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="@+id/lottieAnimationView"
-            app:layout_constraintTop_toBottomOf="@+id/textView4" />
+            app:layout_constraintTop_toBottomOf="@+id/textView5" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
