@@ -1,10 +1,12 @@
-package com.mustafa.weatherapp
+package com.mustafa.weatherapp.model.network
 
 import com.google.gson.Gson
 import com.mustafa.weatherapp.model.response.Weather
 import com.mustafa.weatherapp.util.Constants
 import com.mustafa.weatherapp.util.Status
-import okhttp3.*
+import okhttp3.HttpUrl
+import okhttp3.OkHttpClient
+import okhttp3.Request
 
 object Client {
 
@@ -15,7 +17,7 @@ object Client {
     fun requestWeatherData(): Status<Weather> {
         val request = Request.Builder().url(httpUrl).build()
         val response = client.newCall(request).execute()
-        return if (response.isSuccessful){
+        return if (response.isSuccessful) {
             val weather = gson.fromJson(response.body!!.string(), Weather::class.java)
             Status.Success(weather)
         } else {
@@ -38,7 +40,6 @@ object Client {
             .addQueryParameter(keys.FIELDS, values.HUMIDITY)
             .addQueryParameter(keys.FIELDS, values.WIND_SPEED)
             .addQueryParameter(keys.FIELDS, values.WEATHER_CODE)
-            .addQueryParameter(keys.FIELDS, values.RAIN_INTENSITY)
             .addQueryParameter(keys.TIMESTEPS, values.ONE_HOUR)
             .addQueryParameter(keys.UNITS, values.METRIC)
             .addQueryParameter(keys.START_TIME, values.NOW)

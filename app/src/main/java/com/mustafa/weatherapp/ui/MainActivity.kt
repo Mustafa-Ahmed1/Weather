@@ -2,91 +2,124 @@ package com.mustafa.weatherapp.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
-import com.google.gson.Gson
+import com.mustafa.weatherapp.WeatherRepository
 import com.mustafa.weatherapp.databinding.ActivityMainBinding
 import com.mustafa.weatherapp.model.response.Weather
-import com.mustafa.weatherapp.util.Constants
-import okhttp3.*
-import java.io.IOException
+import com.mustafa.weatherapp.util.Status
+import com.mustafa.weatherapp.util.add
+import com.mustafa.weatherapp.util.hide
+import com.mustafa.weatherapp.util.show
+import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import io.reactivex.rxjava3.disposables.CompositeDisposable
+import io.reactivex.rxjava3.schedulers.Schedulers
 import java.text.SimpleDateFormat
 import java.util.*
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val client = OkHttpClient()
-    private val httpUrl = buildHttpUrl()
+    private val compositeDisposable: CompositeDisposable = CompositeDisposable()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         binding = ActivityMainBinding.inflate(layoutInflater)
         setContentView(binding.root)
 
-        requestWeatherData()
+        getWeatherData()
+
+        binding.lottieReload.setOnClickListener {
+            getWeatherData()
+            binding.lottieReload.playAnimation()
+        }
     }
 
+    private fun getWeatherData() {
+        WeatherRepository.getWeather()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    onWeatherResult(it)
+                },
+                {
+                    binding.screenOnFail.show()
+                    binding.screenOnSuccess.hide()
+                }).add(compositeDisposable)
+    }
 
-    // تنقل الى كلاس جديد باسم Client
-    private fun requestWeatherData() {
-        val request = Request.Builder().url(httpUrl).build()
+    private fun onWeatherResult(response: Status<Weather>) {
+        hideAllViews()
 
-        client.newCall(request).enqueue(object : Callback {
-
-            override fun onFailure(call: Call, e: IOException) {
-                Log.i(LOG_TAG, "fail: ${e.message}")
+        when (response) {
+            is Status.Error -> {
+                binding.screenOnFail.show()
             }
 
-            override fun onResponse(call: Call, response: Response) {
-                response.body?.string()?.let { jsonString ->
-                    val weather = Gson().fromJson(jsonString, Weather::class.java)
-                    runOnUiThread {
-                        bindViews(weather)
-                    }
-                }
+            is Status.Loading -> {
+                binding.screenOnSuccess.show()
+                getWeatherLoadingLottieViews().forEach { it.show() }
+                getWeatherResultViews().forEach { it.hide() }
             }
-        })
+
+            is Status.Success -> {
+                binding.screenOnSuccess.show()
+                getWeatherResultViews().forEach { it.show() }
+                getWeatherLoadingLottieViews().forEach { it.hide() }
+                bindOnSuccessData(response.data)
+            }
+        }
     }
 
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
-    private fun bindViews(weather: Weather) {
+    private fun bindOnSuccessData(weather: Weather) {
         val currentDate = Calendar.getInstance()
         val simpleDateFormat = SimpleDateFormat("MMM d, h:mm a")
         val formattedDate = simpleDateFormat.format(currentDate.time)
 
-        val currentValues = weather.data.timelines[0].intervals[0].values
-
+        val currentWeatherValues = weather.data.timelines[0].intervals[0].values
         binding.apply {
-            textTemperatureNow.text = "${currentValues.temperature}°"
+            textTemperatureNow.text = "${currentWeatherValues.temperature}°"
             textTemperatureToday.text = weather.data.timelines[0].intervals[3].values.temperature
-            textWindSpeedToday.text = currentValues.windSpeed
-            textHumidityToday.text = currentValues.humidity
+            textWindSpeedToday.text = currentWeatherValues.windSpeed
+            textHumidityToday.text = currentWeatherValues.humidity
             textTodayDate.text = "Today, $formattedDate"
         }
     }
 
-    private fun buildHttpUrl() = with(Constants.HttpUrl) {
-        val keys = Constants.HttpUrl.Keys
-        val values = Constants.HttpUrl.Values
-        HttpUrl.Builder()
-            .scheme(SCHEME)
-            .host(HOST)
-            .addPathSegments(PATH_SEGMENTS)
-            .addQueryParameter(
-                keys.LOCATION,
-                "${values.IRAQ_MISAN_LAT}, ${values.IRAQ_MISAN_LONG}"
+    private fun getWeatherLoadingLottieViews(): MutableList<View> {
+        with(binding) {
+            return mutableListOf(
+                lottieTemperatureNowLoading,
+                lottieTemperatureTodayLoading,
+                lottieHumidityTodayLoading,
+                lottieWindSpeedTodayLoading
             )
-            .addQueryParameter(keys.FIELDS, values.TEMPERATURE)
-            .addQueryParameter(keys.FIELDS, values.HUMIDITY)
-            .addQueryParameter(keys.FIELDS, values.WIND_SPEED)
-            .addQueryParameter(keys.FIELDS, values.WEATHER_CODE)
-            .addQueryParameter(keys.FIELDS, values.RAIN_INTENSITY)
-            .addQueryParameter(keys.TIMESTEPS, values.ONE_HOUR)
-            .addQueryParameter(keys.UNITS, values.METRIC)
-            .addQueryParameter(keys.START_TIME, values.NOW)
-            .addQueryParameter(keys.END_TIME, values.NOW_PLUS_6H)
-            .addQueryParameter(keys.API_KEY, values.API_KEY)
-            .build()
+        }
+    }
+
+    private fun getWeatherResultViews(): MutableList<View> {
+        with(binding) {
+            return mutableListOf(
+                textTemperatureNow,
+                textTemperatureToday,
+                textHumidityToday,
+                textWindSpeedToday
+            )
+        }
+    }
+
+    private fun hideAllViews() {
+        binding.apply {
+            screenOnFail.hide()
+            screenOnSuccess.hide()
+        }
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        compositeDisposable.dispose()
     }
 
     companion object {
