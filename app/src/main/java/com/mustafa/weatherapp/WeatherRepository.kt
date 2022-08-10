@@ -2,26 +2,26 @@ package com.mustafa.weatherapp
 
 import com.mustafa.weatherapp.model.network.Client
 import com.mustafa.weatherapp.model.response.Weather
-import com.mustafa.weatherapp.util.Status
+import com.mustafa.weatherapp.util.State
 import io.reactivex.rxjava3.core.Observable
 
 object WeatherRepository {
-    fun getWeather(): Observable<Status<Weather>> {
+    fun getWeather(): Observable<State<Weather>> {
         return getWeatherInfo().flatMap {
             when (it) {
-                is Status.Error -> {
+                is State.Error -> {
                     Observable.create { emitter ->
                         emitter.onNext(it)
                         emitter.onComplete()
                     }
                 }
-                is Status.Loading -> {
+                is State.Loading -> {
                     Observable.create { emitter ->
                         emitter.onNext(it)
                         emitter.onComplete()
                     }
                 }
-                is Status.Success -> {
+                is State.Success -> {
                     Observable.create { emitter ->
                         emitter.onNext(it)
                         emitter.onComplete()
@@ -32,10 +32,10 @@ object WeatherRepository {
 
     }
 
-    private fun getWeatherInfo(): Observable<Status<Weather>> {
+    private fun getWeatherInfo(): Observable<State<Weather>> {
         return Observable.create { emitter ->
             emitter.apply {
-                onNext(Status.Loading)
+                onNext(State.Loading)
                 onNext(Client.requestWeatherData())
                 onComplete()
             }

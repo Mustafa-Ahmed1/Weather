@@ -3,7 +3,7 @@ package com.mustafa.weatherapp.model.network
 import com.google.gson.Gson
 import com.mustafa.weatherapp.model.response.Weather
 import com.mustafa.weatherapp.util.Constants
-import com.mustafa.weatherapp.util.Status
+import com.mustafa.weatherapp.util.State
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
@@ -14,14 +14,14 @@ object Client {
     private val httpUrl = buildHttpUrl()
     private val gson = Gson()
 
-    fun requestWeatherData(): Status<Weather> {
+    fun requestWeatherData(): State<Weather> {
         val request = Request.Builder().url(httpUrl).build()
         val response = client.newCall(request).execute()
         return if (response.isSuccessful) {
             val weather = gson.fromJson(response.body!!.string(), Weather::class.java)
-            Status.Success(weather)
+            State.Success(weather)
         } else {
-            Status.Error(response.message)
+            State.Error(response.message)
         }
     }
 
