@@ -26,6 +26,8 @@ class MainActivity : AppCompatActivity() {
         requestWeatherData()
     }
 
+
+    // تنقل الى كلاس جديد باسم Client
     private fun requestWeatherData() {
         val request = Request.Builder().url(httpUrl).build()
 

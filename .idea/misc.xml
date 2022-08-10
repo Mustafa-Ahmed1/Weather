@@ -3,6 +3,10 @@
   <component name="DesignSurface">
     <option name="filePathToZoomLevelMap">
       <map>
+        <entry key="..\:/Kotlin_Corse/WeatherAppWithRxJava/app/src/main/res/drawable/ic_location.xml" value="0.157" />
+        <entry key="..\:/Kotlin_Corse/WeatherAppWithRxJava/app/src/main/res/drawable/ic_options.xml" value="0.157" />
+        <entry key="..\:/Kotlin_Corse/WeatherAppWithRxJava/app/src/main/res/drawable/ic_weather_launcher.xml" value="0.157" />
+        <entry key="..\:/Kotlin_Corse/WeatherAppWithRxJava/app/src/main/res/layout/activity_main.xml" value="0.25416666666666665" />
         <entry key="..\:/Users/Mustafa Ahmed/AndroidStudioProjects/APIWeek/app/src/main/res/drawable/ic_launcher_background.xml" value="0.1385" />
         <entry key="..\:/Users/Mustafa Ahmed/AndroidStudioProjects/APIWeek/app/src/main/res/layout/activity_main.xml" value="0.264" />
         <entry key="..\:/Users/Mustafa Ahmed/AndroidStudioProjects/WeatherApp/app/src/main/res/drawable-v24/ic_launcher_foreground.xml" value="0.1385" />
