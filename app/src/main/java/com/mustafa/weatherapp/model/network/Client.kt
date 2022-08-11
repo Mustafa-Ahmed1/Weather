@@ -21,7 +21,7 @@ object Client {
             val weather = gson.fromJson(response.body!!.string(), Weather::class.java)
             State.Success(weather)
         } else {
-            State.Error(response.message)
+            State.Fail(response.message)
         }
     }
 

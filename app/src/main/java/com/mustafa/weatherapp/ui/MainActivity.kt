@@ -29,37 +29,34 @@ class MainActivity : AppCompatActivity() {
         setOnClickListenersOfViews()
     }
 
-
     private fun requestWeatherData() {
-
         WeatherRepository.getWeather()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { state ->
-                    Log.i("MAIN_ACTIVITY", "onNext: $state")
+                    Log.i(LOG_TAG, "onNext: $state")
                     checkRequestState(state)
                 },
                 {
-                    Log.i("MAIN_ACTIVITY", "onError: ${it.message}")
-                    showErrorScreen()
+                    Log.i(LOG_TAG, "onError: ${it.message}")
+                    showFailScreen()
                 }
             ).add(compositeDisposable)
     }
-
 
     private fun checkRequestState(responseState: State<Weather>) {
         hideAllViews()
 
         when (responseState) {
-            is State.Error -> {
-                showErrorScreen()
+            is State.Fail -> {
+                showFailScreen()
             }
             is State.Loading -> {
                 showLoadingScreen()
             }
             is State.Success -> {
-                showSuccessScreen(response = responseState.data)
+                showSuccessScreen(responseState.data)
             }
         }
     }
@@ -70,28 +67,31 @@ class MainActivity : AppCompatActivity() {
             screenOnSuccess.hide()
         }
     }
-    private fun showErrorScreen() {
+
+    private fun showFailScreen() {
         binding.apply {
             screenOnSuccess.hide()
             screenOnFail.show()
         }
     }
-    private fun showLoadingScreen() {
-        Log.i("MAIN_ACTIVITY", "loading...")
 
+    private fun showLoadingScreen() {
         binding.screenOnSuccess.show()
         showLottieAnimations()
-        hideWeatherViews()
+        hideWeatherResultViews()
+
+        Log.i(LOG_TAG, "loading...")
     }
+
     private fun showSuccessScreen(response: Weather) {
-        showWeatherViews()
+        showWeatherResultViews()
         hideLottieAnimations()
 
         bindWeatherData(response)
     }
+
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
     private fun bindWeatherData(weather: Weather) {
-
         val formattedDate = dateFormatter.formatCurrentDate()
         val currentWeatherValues = weather.data.timelines[0].intervals[0].values
 
@@ -101,6 +101,63 @@ class MainActivity : AppCompatActivity() {
             textWindSpeedToday.text = currentWeatherValues.windSpeed
             textHumidityToday.text = currentWeatherValues.humidity
             textTodayDate.text = "Today, $formattedDate"
+        }
+    }
+
+    private fun showLottieAnimations() {
+        binding.apply {
+            combineViews(
+                lottieTemperatureNowLoading, lottieTemperatureTodayLoading,
+                lottieHumidityTodayLoading, lottieWindSpeedTodayLoading
+            ) { it.show() }
+        }
+    }
+
+    private fun hideLottieAnimations() {
+        binding.apply {
+            combineViews(
+                lottieTemperatureNowLoading, lottieTemperatureTodayLoading,
+                lottieHumidityTodayLoading, lottieWindSpeedTodayLoading
+            ) { view -> view.hide() }
+        }
+    }
+
+    private fun showWeatherResultViews() {
+        binding.apply {
+            combineViews(
+                screenOnSuccess,
+                textTemperatureToday,
+                textTemperatureNow,
+                textHumidityToday,
+                textWindSpeedToday,
+                textTopTemperatureUnit,
+                textTopPercent,
+                textTopSpeedUnit
+            ) {
+                it.show()
+            }
+        }
+    }
+
+    private fun hideWeatherResultViews() {
+        binding.apply {
+            combineViews(
+                textTemperatureToday,
+                textTemperatureNow,
+                textHumidityToday,
+                textWindSpeedToday,
+                textTopTemperatureUnit,
+                textTopPercent,
+                textTopSpeedUnit,
+            ) { view ->
+                view.hide()
+            }
+        }
+    }
+
+    private fun combineViews(vararg views: View, changeVisibility: (view: View) -> Unit) {
+        views.forEach { view ->
+            changeVisibility(view)
         }
     }
 
@@ -115,74 +172,10 @@ class MainActivity : AppCompatActivity() {
 
             textTryAgain.setOnClickListener {
                 requestWeatherData()
+                binding.lottieAnimationView.playAnimation()
             }
         }
     }
-
-
-
-
-
-
-
-    private fun showLottieAnimations() {
-        binding.apply {
-            changeViewsVisibility(
-                lottieTemperatureNowLoading, lottieTemperatureTodayLoading,
-                lottieHumidityTodayLoading, lottieWindSpeedTodayLoading
-            ) { it.show() }
-        }
-    }
-    private fun hideLottieAnimations() {
-        binding.apply {
-            changeViewsVisibility(
-                lottieTemperatureNowLoading, lottieTemperatureTodayLoading,
-                lottieHumidityTodayLoading, lottieWindSpeedTodayLoading
-            ) { view -> view.hide() }
-        }
-    }
-
-    private fun showWeatherViews() {
-        binding.apply {
-            changeViewsVisibility(
-                screenOnSuccess,
-                textTemperatureToday,
-                textTemperatureNow,
-                textHumidityToday,
-                textWindSpeedToday,
-                textTopTemperatureUnit,
-                textTopPercent,
-                textTopSpeedUnit
-            ) {
-                it.show()
-            }
-        }
-    }
-    private fun hideWeatherViews() {
-        binding.apply {
-            changeViewsVisibility(
-                textTemperatureToday,
-                textTemperatureNow,
-                textHumidityToday,
-                textWindSpeedToday,
-                textTopTemperatureUnit,
-                textTopPercent,
-                textTopSpeedUnit,
-            ) {
-                it.hide()
-            }
-        }
-    }
-
-
-
-
-    private fun changeViewsVisibility(vararg views: View, changeVisibility: (view: View) -> Unit) {
-        views.forEach { view ->
-            changeVisibility(view)
-        }
-    }
-
 
 
     override fun onDestroy() {
@@ -190,8 +183,8 @@ class MainActivity : AppCompatActivity() {
         compositeDisposable.dispose()
     }
 
+
     companion object {
         const val LOG_TAG = "MainActivity"
     }
-
 }

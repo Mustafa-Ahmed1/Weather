@@ -25,7 +25,6 @@ object Constants {
             const val HUMIDITY = "humidity"
             const val WIND_SPEED = "windSpeed"
             const val WEATHER_CODE = "weatherCode"
-            const val RAIN_INTENSITY = "rainIntensity"
             const val ONE_HOUR = "1h"
             const val METRIC = "metric"
             const val NOW = "now"

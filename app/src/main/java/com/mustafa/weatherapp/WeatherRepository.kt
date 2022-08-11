@@ -9,7 +9,7 @@ object WeatherRepository {
     fun getWeather(): Observable<State<Weather>> {
         return getWeatherInfo().flatMap {
             when (it) {
-                is State.Error -> {
+                is State.Fail -> {
                     Observable.create { emitter ->
                         emitter.onNext(it)
                         emitter.onComplete()
