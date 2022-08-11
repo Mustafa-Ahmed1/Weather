@@ -3,20 +3,19 @@ package com.mustafa.weatherapp.model.network
 import com.google.gson.Gson
 import com.mustafa.weatherapp.model.response.Weather
 import com.mustafa.weatherapp.util.Constants
-import com.mustafa.weatherapp.util.State
 import okhttp3.HttpUrl
 import okhttp3.OkHttpClient
 import okhttp3.Request
 
 object Client {
-
-    private val client = OkHttpClient()
     private val httpUrl = buildHttpUrl()
+    private val okHttpClient = OkHttpClient()
     private val gson = Gson()
 
     fun requestWeatherData(): State<Weather> {
-        val request = Request.Builder().url(httpUrl).build()
-        val response = client.newCall(request).execute()
+        val request = buildRequest()
+        val response = executeRequest(request)
+
         return if (response.isSuccessful) {
             val weather = gson.fromJson(response.body!!.string(), Weather::class.java)
             State.Success(weather)
@@ -28,6 +27,7 @@ object Client {
     private fun buildHttpUrl() = with(Constants.HttpUrl) {
         val keys = Constants.HttpUrl.Keys
         val values = Constants.HttpUrl.Values
+
         HttpUrl.Builder()
             .scheme(SCHEME)
             .host(HOST)
@@ -47,4 +47,9 @@ object Client {
             .addQueryParameter(keys.API_KEY, values.API_KEY)
             .build()
     }
+
+    private fun buildRequest() = Request.Builder().url(httpUrl).build()
+
+    private fun executeRequest(request: Request) = okHttpClient.newCall(request).execute()
+
 }

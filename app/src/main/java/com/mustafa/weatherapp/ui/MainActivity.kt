@@ -3,10 +3,14 @@ package com.mustafa.weatherapp.ui
 import android.annotation.SuppressLint
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
-import com.mustafa.weatherapp.WeatherRepository
 import com.mustafa.weatherapp.databinding.ActivityMainBinding
+import com.mustafa.weatherapp.model.network.State
+import com.mustafa.weatherapp.model.reposerties.weather.WeatherRepository
 import com.mustafa.weatherapp.model.response.Weather
-import com.mustafa.weatherapp.util.*
+import com.mustafa.weatherapp.util.DateFormatter
+import com.mustafa.weatherapp.util.extensions.add
+import com.mustafa.weatherapp.util.extensions.hide
+import com.mustafa.weatherapp.util.extensions.show
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
@@ -16,6 +20,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var binding: ActivityMainBinding
     private val compositeDisposable: CompositeDisposable = CompositeDisposable()
     private val dateFormatter = DateFormatter()
+    private val weatherRepository = WeatherRepository()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -27,7 +32,7 @@ class MainActivity : AppCompatActivity() {
     }
 
     private fun requestWeatherData() {
-        WeatherRepository.getWeather()
+        weatherRepository.getWeatherInfo()
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(

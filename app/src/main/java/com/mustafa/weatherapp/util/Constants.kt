@@ -17,8 +17,6 @@ object Constants {
         }
 
         object Values {
-            const val IRAQ_LAT = "33.312805"
-            const val IRAQ_LONG = "44.361488"
             const val IRAQ_MISAN_LAT = "31.833332"
             const val IRAQ_MISAN_LONG = "47.150002"
             const val TEMPERATURE = "temperature"

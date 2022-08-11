@@ -1,4 +1,4 @@
-package com.mustafa.weatherapp.util
+package com.mustafa.weatherapp.model.network
 
 sealed class State<out T> {
     object Loading : State<Nothing>()
