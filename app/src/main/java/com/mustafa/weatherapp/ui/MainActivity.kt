@@ -2,8 +2,6 @@ package com.mustafa.weatherapp.ui
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
-import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import com.mustafa.weatherapp.WeatherRepository
 import com.mustafa.weatherapp.databinding.ActivityMainBinding
@@ -12,7 +10,6 @@ import com.mustafa.weatherapp.util.*
 import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
 import io.reactivex.rxjava3.disposables.CompositeDisposable
 import io.reactivex.rxjava3.schedulers.Schedulers
-
 
 class MainActivity : AppCompatActivity() {
 
@@ -35,144 +32,76 @@ class MainActivity : AppCompatActivity() {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe(
                 { state ->
-                    Log.i(LOG_TAG, "onNext: $state")
-                    checkRequestState(state)
+                    showResponseState(state)
                 },
                 {
-                    Log.i(LOG_TAG, "onError: ${it.message}")
-                    showFailScreen()
+                    showFailState()
                 }
             ).add(compositeDisposable)
     }
 
-    private fun checkRequestState(responseState: State<Weather>) {
-        hideAllViews()
-
-        when (responseState) {
-            is State.Fail -> {
-                showFailScreen()
-            }
-            is State.Loading -> {
-                showLoadingScreen()
-            }
-            is State.Success -> {
-                showSuccessScreen(responseState.data)
-            }
-        }
+    private fun showResponseState(responseState: State<Weather>) = when (responseState) {
+        is State.Fail -> showFailState()
+        is State.Loading -> showLoadingState()
+        is State.Success -> showSuccessState(responseData = responseState.data)
     }
 
-    private fun hideAllViews() {
-        binding.apply {
-            screenOnFail.hide()
-            screenOnSuccess.hide()
-        }
-    }
-
-    private fun showFailScreen() {
+    private fun showFailState() {
         binding.apply {
             screenOnSuccess.hide()
             screenOnFail.show()
         }
     }
 
-    private fun showLoadingScreen() {
-        binding.screenOnSuccess.show()
-        showLottieAnimations()
-        hideWeatherResultViews()
-
-        Log.i(LOG_TAG, "loading...")
+    private fun showLoadingState() {
+        binding.apply {
+            loadingGroup.show()
+            screenOnSuccess.show()
+            screenOnFail.hide()
+            weatherResultsGroup.hide()
+        }
     }
 
-    private fun showSuccessScreen(response: Weather) {
-        showWeatherResultViews()
-        hideLottieAnimations()
+    private fun showSuccessState(responseData: Weather) {
+        binding.apply {
+            screenOnSuccess.show()
+            weatherResultsGroup.show()
+            loadingGroup.hide()
+        }
 
-        bindWeatherData(response)
+        bindWeatherData(responseData)
     }
 
     @SuppressLint("SimpleDateFormat", "SetTextI18n")
     private fun bindWeatherData(weather: Weather) {
         val formattedDate = dateFormatter.formatCurrentDate()
-        val currentWeatherValues = weather.data.timelines[0].intervals[0].values
+
+        val recentWeatherData = weather.data.timelines[0]
+        val currentWeatherValues = recentWeatherData.intervals[0].values
 
         binding.apply {
             textTemperatureNow.text = "${currentWeatherValues.temperature}°"
-            textTemperatureToday.text = weather.data.timelines[0].intervals[3].values.temperature
+            textTemperatureToday.text = recentWeatherData.intervals[3].values.temperature
             textWindSpeedToday.text = currentWeatherValues.windSpeed
             textHumidityToday.text = currentWeatherValues.humidity
             textTodayDate.text = "Today, $formattedDate"
         }
     }
 
-    private fun showLottieAnimations() {
-        binding.apply {
-            combineViews(
-                lottieTemperatureNowLoading, lottieTemperatureTodayLoading,
-                lottieHumidityTodayLoading, lottieWindSpeedTodayLoading
-            ) { it.show() }
-        }
-    }
-
-    private fun hideLottieAnimations() {
-        binding.apply {
-            combineViews(
-                lottieTemperatureNowLoading, lottieTemperatureTodayLoading,
-                lottieHumidityTodayLoading, lottieWindSpeedTodayLoading
-            ) { view -> view.hide() }
-        }
-    }
-
-    private fun showWeatherResultViews() {
-        binding.apply {
-            combineViews(
-                screenOnSuccess,
-                textTemperatureToday,
-                textTemperatureNow,
-                textHumidityToday,
-                textWindSpeedToday,
-                textTopTemperatureUnit,
-                textTopPercent,
-                textTopSpeedUnit
-            ) {
-                it.show()
-            }
-        }
-    }
-
-    private fun hideWeatherResultViews() {
-        binding.apply {
-            combineViews(
-                textTemperatureToday,
-                textTemperatureNow,
-                textHumidityToday,
-                textWindSpeedToday,
-                textTopTemperatureUnit,
-                textTopPercent,
-                textTopSpeedUnit,
-            ) { view ->
-                view.hide()
-            }
-        }
-    }
-
-    private fun combineViews(vararg views: View, changeVisibility: (view: View) -> Unit) {
-        views.forEach { view ->
-            changeVisibility(view)
-        }
-    }
-
 
     @SuppressLint("ClickableViewAccessibility", "ResourceAsColor")
     private fun setOnClickListenersOfViews() {
-        binding.apply {
-            lottieReload.setOnClickListener {
+        with(binding) {
+            lottieReloadButton.setOnClickListener {
                 requestWeatherData()
-                binding.lottieReload.playAnimation()
+                lottieReloadButton.playAnimation()
             }
 
             textTryAgain.setOnClickListener {
                 requestWeatherData()
-                binding.lottieAnimationView.playAnimation()
+
+                lottieReloadButton.cancelAnimation()
+                lottieErrorAnimation.playAnimation()
             }
         }
     }
@@ -183,8 +112,4 @@ class MainActivity : AppCompatActivity() {
         compositeDisposable.dispose()
     }
 
-
-    companion object {
-        const val LOG_TAG = "MainActivity"
-    }
 }
